@@ -1,8 +1,3 @@
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<cstdio>
-#include<cstdlib>
 #include<cstring>
 using namespace std;
 void encrypt(char *out,char *in);

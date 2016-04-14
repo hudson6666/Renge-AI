@@ -1,20 +1,14 @@
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<cstdio>
-#include<cstdlib>
-#include<cstring>
 #include"head.h"
 using namespace std;
 void startup();
 void shutdown();
 void startupfunc();
-void startupscreen();
 void init();
 void save();
 void process(char *in);
 void commandExit();
 void commandClear();
+void commandHelp();
 void commandNotFound();
 Config user;
 Record chatRecord;
@@ -43,35 +37,23 @@ void shutdown(){
     exit(0);
 }
 void init(){
-    chatRecord.add("Renge: 初、初次见面……请、请告诉我你的名字……>///<");
+    screenSleep();
+    chatRecord.add("Renge: 初、初次见面……请、请告诉我你的名字……>///<\n");
 	char tmp[1000]={0};
 	cin >> tmp;
 	user.changeName(tmp);
-    sprintf(tmp,"%s\n",user.name);
+    sprintf(tmp,"你：%s\n",user.name);
     chatRecord.add(tmp);
+    screenSleep();
     sprintf(tmp,"Renge: %s……吗？好漂亮的名字呢=v=\n",user.name);
     chatRecord.add(tmp);
 }
 void startupfunc(){
     user.input();
     char tmp[1000]={0};
+    screenSleep();
     sprintf(tmp,"Renge: 欢、欢迎回来……%s……\n",user.name);
     chatRecord.add(tmp);
-}
-void startupscreen(){
-	char s1[][4]={" _ ","   "," _ " ,  " _ ","   " ," _ "," _ "," _ "," _ "," _ "};
-	char s2[][4]={"| |","  |"," _|" ,  " _|","|_|", "|_ ","|_ ","  |","|_|","|_|"};
-	char s3[][4]={"|_|","  |","|_ ",   " _|","  |", " _|","|_|","  |","|_|"," _|"};
-	char s4[]="聊天机器人0.2 by koooyf & catsworld & crackpot";
-    chatRecord.add("--------------------------------------------------------------\n");
-    char tmp[1000]={0};
-    sprintf(tmp,"%s%s%s\n",s1[2],s1[0],s1[8]);
-    chatRecord.add(tmp);
-    sprintf(tmp,"%s%s%s\n",s2[2],s2[0],s2[8]);
-    chatRecord.add(tmp);
-    sprintf(tmp,"%s%s%s      %s\n",s3[2],s3[0],s3[8],s4);
-    chatRecord.add(tmp);
-    chatRecord.add("--------------------------------------------------------------\n");
 }
 void save(){
     answers.output();
@@ -92,6 +74,10 @@ void process(char *in){
         char tmp[1000]={0};
         cin.getline(tmp,1000,'\n');
         commandClear();
+    }else if(strcmp(in,"/help")==0||strcmp(in,"/?")==0){
+        char tmp[1000]={0};
+        cin.getline(tmp,1000,'\n');
+        commandHelp();
     }else{
         char tmp[1000]={0};
         cin.getline(tmp,1000,'\n');
@@ -99,6 +85,7 @@ void process(char *in){
     }
 }
 void commandExit(){
+    screenSleep();
     chatRecord.add("Renge: 下、下次再见……\n");
     getchar();
     shutdown();
@@ -107,6 +94,11 @@ void commandClear(){
     clearScreen();
     chatRecord.clear();
 }
+void commandHelp(){
+    screenSleep();
+    chatRecord.add("Renge: 嗯……/exit可以用来退出=w=还有/clear用于清屏什么的……\n");
+}
 void commandNotFound(){
-    chatRecord.add("Renge: ……？\n");
+    screenSleep();
+    chatRecord.add("Renge: ……？大概可以用/help和/?来查看帮助……\n");
 }

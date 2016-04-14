@@ -4,12 +4,14 @@
 #include<cstdio>
 #include<cstdlib>
 #include<cstring>
+#include<ctime>
 #include"crypt.h"
 using namespace std;
 class Config;
 class Answerlist;
 class Record;
 void clearScreen();
+void startupscreen();
 class Config{
 	public:
 		char name[50]={0};
@@ -59,15 +61,17 @@ class Record{
 		}
         void clear(){
             num=-1;
+            startupscreen();
             for(int i=0;i<total;i++) cout << "\n";
         }
 	private:
-        const char total=20;
+        const char total=15;
 		char rec[20][200]={{0}};
 		int num=-1;
 		void output(){
             clearScreen();
-            if (num<=total){
+            startupscreen();
+            if (num<total){
                 for(int i=0;i<=num;i++) cout << rec[i];
                 for(int i=0;i<total-num-1;i++) cout << "\n";
             }
@@ -80,6 +84,26 @@ class Record{
 void clearScreen(){
     system("clear");
     #ifdef _WIN32
-        system£¨¡°cls");
+        system("cls");
     #endif
+}
+void screenSleep(){
+    for(long long loop=0;loop<120000000;loop++);
+}
+void startupscreen(){
+    struct tm *now;
+    time_t timeNow=time(NULL);
+    char tmp[6]={0};
+    now=localtime(&timeNow);
+    strftime(tmp,6,"%R",now);
+	char s1[][4]={" _ ","   "," _ " ,  " _ ","   " ," _ "," _ "," _ "," _ "," _ ","   "};
+	char s2[][4]={"| |","  |"," _|" ,  " _|","|_|", "|_ ","|_ ","  |","|_|","|_|"," . "};
+	char s3[][4]={"|_|","  |","|_ ",   " _|","  |", " _|","|_|","  |","|_|"," _|"," . "};
+    int a[]={tmp[0]-'0',tmp[1]-'0',10,tmp[3]-'0',tmp[4]-'0'};
+    cout << "--------------------------------------------------------------------\n";
+    cout << s1[a[0]] << s1[a[1]] << s1[a[2]] << s1[a[3]] << s1[a[4]] << "\n";
+    cout << s2[a[0]] << s2[a[1]] << s2[a[2]] << s2[a[3]] << s2[a[4]] << "\n";
+    cout << s3[a[0]] << s3[a[1]] << s3[a[2]] << s3[a[3]] << s3[a[4]];
+    cout << "    èŽ²é…±0.2 by Koooyf & Catsworld & Crackpot from 208\n";
+    cout << "--------------------------------------------------------------------\n";
 }
