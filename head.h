@@ -6,39 +6,33 @@ using namespace std;
 class Config;
 class Answerlist;
 class Record;
-void encrypt(wchar_t *out,wchar_t *in);
-void startup();
-void shutdown();
-void startupscreen();
-void init();
-extern Config user;
+void encrypt(char *out,char *in);
 class Config{
 	public:
-		wchar_t name[50]={0};
-		void changeName(wchar_t *newName){
+		char name[50]={0};
+		void changeName(char *newName){
 			sprintf(name,"%s",newName);
 			output();
 		}
 	private:
 		void output(){
-			wchar_t tmp[50]={0};
+			char tmp[50]={0};
             encrypt(tmp,name);
 			ofstream configout("config.tze");
 			configout << tmp << "\n";
 			configout.close();
-
 		}
 };
 class Answerlist{
 	public:
-		void answer(wchar_t *question){
+		void answer(char *question){
 		}
 		void init(){
 		}
-		void teach(wchar_t *question,wchar_t *answer){
+		void teach(char *question,char *answer){
 		}
 	private:
-		wchar_t ques[1000][100]={{0}},ans[1000][100]={{0}};
+		char ques[1000][100]={{0}},ans[1000][100]={{0}};
 		int num=0;
 		void sort(int L,int r){
 		}
@@ -47,31 +41,14 @@ class Answerlist{
 };
 class Record{
 	public:
-		void add(wchar_t *newRecord){
+		void add(char *newRecord){
 		}
 	private:
-		wchar_t rec[1000][200]={{0}};
+		char rec[1000][200]={{0}};
 		int num=0;
 		void output(){
 		}
 };
-void encrypt(wchar_t *out,wchar_t *in){
+void encrypt(char *out,char *in){
 	sprintf(out,"%s",in);
-}
-void startup(){
-	startupscreen();
-	ifstream configin("config.tze");
-	if(!configin) init();
-	else{
-	}
-}
-void shutdown(){
-}
-void init(){
-	cout << "请……请告诉我你的名字……>///<：";
-	wchar_t tmp[50]={0};
-	cin >> tmp;
-	user.changeName(tmp);
-}
-void startupscreen(){
 }
