@@ -8,10 +8,11 @@ void save();
 void process(char *in);
 void commandExit();
 void commandClear();
+void commandTeach();
 void commandHelp();
 void commandNotFound();
 Config user;
-Record chatRecord;
+RecordList chatRecord;
 Answerlist answers;
 const char password[]="catsworld";
 int main(){
@@ -47,6 +48,7 @@ void init(){
     screenSleep();
     sprintf(tmp,"Renge: %s……吗？好漂亮的名字呢=v=\n",user.name);
     chatRecord.add(tmp);
+	answers.init(user);
 }
 void startupfunc(){
     user.input();
@@ -54,6 +56,8 @@ void startupfunc(){
     screenSleep();
     sprintf(tmp,"Renge: 欢、欢迎回来……%s……\n",user.name);
     chatRecord.add(tmp);
+	answers.init(user);
+	answers.input();
 }
 void save(){
     answers.output();
@@ -65,7 +69,7 @@ void process(char *in){
         strcat(in,tmp);
         sprintf(tmp,"%s: %s\n",user.name,in);
         chatRecord.add(tmp);
-        answers.answer(in);
+        answers.answer(in,chatRecord);
     }else if(strcmp(in,"/exit")==0){
         char tmp[1000]={0};
         cin.getline(tmp,1000,'\n');
@@ -74,6 +78,10 @@ void process(char *in){
         char tmp[1000]={0};
         cin.getline(tmp,1000,'\n');
         commandClear();
+	}else if(strcmp(in,"/teach")==0){
+		char tmp[1000]={0};
+		cin.getline(tmp,1000,'\n');
+		commandTeach();
     }else if(strcmp(in,"/help")==0||strcmp(in,"/?")==0){
         char tmp[1000]={0};
         cin.getline(tmp,1000,'\n');
@@ -93,6 +101,17 @@ void commandExit(){
 void commandClear(){
     clearScreen();
     chatRecord.clear();
+}
+void commandTeach(){
+	char tmp1[1000]={0},tmp2[1000]={0},tmp3[1000]={0};
+	chatRecord.add("Renge: 喵？要教我些什么……？\n");
+	cin.getline(tmp1,1000,'\n');
+	sprintf(tmp3,"Renge: “%s”么……？我该怎么回答？\n",tmp1);
+	chatRecord.add(tmp3);
+	cin.getline(tmp2,1000,'\n');
+	sprintf(tmp3,"Renge: “%s”……我记住了……\n",tmp2);
+	chatRecord.add(tmp3);
+	answers.teach(tmp1,tmp2,user);
 }
 void commandHelp(){
     screenSleep();
