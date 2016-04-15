@@ -137,10 +137,12 @@ class Answerlist{
 				encrypt(tmp,ans[i]);
 				answerout << tmp << "\n";
 		    }
-			encrypt(tmp,ques[num2]);
-			answerout << tmp << "\n";
-			encrypt(tmp,ans[num2]);
-			answerout << tmp;
+			if(num1<num2){
+				encrypt(tmp,ques[num2]);
+				answerout << tmp << "\n";
+				encrypt(tmp,ans[num2]);
+				answerout << tmp;
+			}
 			answerout.close();
 		}
 		void input(){
@@ -151,6 +153,7 @@ class Answerlist{
 			{
 				answerin.getline(tmp,1000,'\n');
 				if(strlen(tmp)==0) continue;
+				if(answerin.eof()) break;
 				num2++;
 				decrypt(ques[num2],tmp);
 				answerin.getline(tmp,1000,'\n');
@@ -166,7 +169,7 @@ class Answerlist{
 		}
 	private:
 		char ques[1000][100],ans[1000][100];
-		int num1=-1,num2=-1;
+		int num1=-1,num2;
 };
 void clearScreen(){
     system("clear");
