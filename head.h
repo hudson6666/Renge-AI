@@ -1,5 +1,6 @@
 #include<iostream>
 #include<fstream>
+#include<string>
 #include<cstdio>
 #include<cstdlib>
 #include<cstring>
@@ -177,6 +178,6 @@ void startupscreen(){
     cout << s1[a[0]] << s1[a[1]] << s1[a[2]] << s1[a[3]] << s1[a[4]] << "\n";
     cout << s2[a[0]] << s2[a[1]] << s2[a[2]] << s2[a[3]] << s2[a[4]] << "\n";
     cout << s3[a[0]] << s3[a[1]] << s3[a[2]] << s3[a[3]] << s3[a[4]];
-    cout << "    莲酱0.35 by Koooyf & Catsworld & Crackpot from 208\n";
+    cout << "    莲酱0.3 by Koooyf & Catsworld & Crackpot from 208\n";
     cout << "--------------------------------------------------------------------\n";
 }

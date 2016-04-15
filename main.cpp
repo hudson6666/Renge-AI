@@ -48,7 +48,6 @@ void init(){
     screenSleep();
     sprintf(tmp,"Renge: %s……吗？好漂亮的名字呢=v=\n",user.name);
     chatRecord.add(tmp);
-	answers.init(user);
 }
 void startupfunc(){
     user.input();
@@ -102,6 +101,14 @@ void commandClear(){
     clearScreen();
     chatRecord.clear();
 }
+void commandHelp(){
+    screenSleep();
+    chatRecord.add("Renge: 嗯……/exit可以用来退出=w=还有/clear用于清屏什么的……\n");
+}
+void commandNotFound(){
+    screenSleep();
+    chatRecord.add("Renge: ……？大概可以用/help和/?来查看帮助……\n");
+}
 void commandTeach(){
 	char tmp1[1000]={0},tmp2[1000]={0},tmp3[1000]={0};
 	chatRecord.add("Renge: 喵？要教我些什么……？\n");
@@ -112,12 +119,4 @@ void commandTeach(){
 	sprintf(tmp3,"Renge: “%s”……我记住了……\n",tmp2);
 	chatRecord.add(tmp3);
 	answers.teach(tmp1,tmp2,user);
-}
-void commandHelp(){
-    screenSleep();
-    chatRecord.add("Renge: 嗯……/exit可以用来退出=w=还有/clear用于清屏什么的……\n");
-}
-void commandNotFound(){
-    screenSleep();
-    chatRecord.add("Renge: ……？大概可以用/help和/?来查看帮助……\n");
 }

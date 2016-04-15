@@ -1,8 +1,6 @@
-main.o
-a.o
-config.tze
-answer.tze
-main.exe
-a.exe
-main.out
-a.out
+*
+!main.cpp
+!head.h
+!crypt.h
+!.gitignore
+!README.md
