@@ -12,15 +12,16 @@ class RecordList;
 class Answerlist;
 void clearScreen();
 void startupscreen();
+bool strhead(char *full,char *sub);
 class Config{
 	public:
-		char name[50]={0};
+		char name[50];
 		void changeName(char *newName){
 			sprintf(name,"%s",newName);
 			output();
 		}
         void input(){
-			char tmp[50]={0};
+			char tmp[50];
 			ifstream configin("config.tze");
 			configin >> tmp;
             decrypt(tmp,tmp);
@@ -29,7 +30,7 @@ class Config{
         }
 	private:
 		void output(){
-			char tmp[50]={0};
+			char tmp[50];
             encrypt(tmp,name);
 			ofstream configout("config.tze");
 			configout << tmp << "\n";
@@ -48,10 +49,6 @@ class RecordList{
             startupscreen();
             for(int i=0;i<total;i++) cout << "\n";
         }
-	private:
-        const char total=15;
-		char rec[20][200]={{0}};
-		int num=-1;
 		void output(){
             clearScreen();
             startupscreen();
@@ -64,29 +61,30 @@ class RecordList{
                 for(int i=0;i<=num%total;i++) cout << rec[i];
             }
 		}
+	private:
+		const int total=15;
+		char rec[20][200];
+		int num=-1;
 };
 class Answerlist{
 	public:
 		void answer(char *question,RecordList &chatRecord){
-		    bool f=0;
-			for(int i=0;i<=num1;i++)
+			for(int i=0;i<=num2;i++)
 			{
 				if(strcmp(question,ques[i])==0)
 				{
-					char tmp[1000]={0};
+					char tmp[1000];
 					sprintf(tmp,"Renge: %s\n",ans[i]);
 					chatRecord.add(tmp);
-					f=1;
+					return;
 				}
 			}
 			int t=strlen(question);
-			if(f==0)
-			{
 				int max=0,where=0;
 				for(int i=0;i<=num2;i++)
 				{
 					int sum=0,count=0;
-					for(int j=0;j<strlen(ques[i]);j++)
+					/*for(int j=0;j<strlen(ques[i]);j++)
 					{
 						if(count>=t) break;
 						if(question[count]==ques[i][j])
@@ -99,60 +97,75 @@ class Answerlist{
 					{
 						max=sum;
 						where=i;
+					}*/
+					if(strhead(question,ques[i])){
+						if(strlen(ques[i])>max){
+							max=strlen(ques[i]);
+							where=i;
+						}
 					}
 				}
-				char tmp[1000]={0};
+				char tmp[1000];
 			if(max!=0) sprintf(tmp,"Renge: %s\n",ans[where]);
-			else if(max==0) sprintf(tmp,"Renge: 我听不懂你在瞎说个啥\n");
+			else if(max==0) sprintf(tmp,"Renge: ……嗯？\n");
 				chatRecord.add(tmp);
-			}
 		}
 		void init(Config user){
-			sprintf(ques[0],"你好");
-			sprintf(ans[0],"%s你好",user.name);
-			sprintf(ques[1],"我们玩点什么啊");
-			sprintf(ans[1],"%s我们交配吧",user.name);
-		   for(int i=0;;i++)
-		   {
-				if(strlen(ques[i])!=0) num1++;
-			    else break;
-		   }
-		   num2=num1;
+			initadd("你好","你好",user);
+			num2=num1;
+			input();
+		}
+		void initadd(char *question,char *answer,Config user){
+			num1++;
+			sprintf(ques[num1],"%s",question);
+			sprintf(ans[num1],"%s",answer);
 		}
 		void teach(char *question,char *answer,Config user){
-                num2++;
-				sprintf(ques[num2],"%s",question);
-				sprintf(ans[num2],"%s",answer);
+			if(strlen(question)==0||strlen(answer)==0) return;
+            num2++;
+			sprintf(ques[num2],"%s",question);
+			sprintf(ans[num2],"%s",answer);
 		}
 		void output(){
-			char tmp1[1000],tmp2[1000];
+			char tmp[1000];
 			ofstream answerout("answer.tze");
-			for(int i=num1+1;i<=num2;i++)
+			for(int i=num1+1;i<num2;i++)
 			{
-				encrypt(tmp1,ques[i]);
-				encrypt(tmp2,ans[i]);
-                answerout<<tmp1<<"\n";
-				answerout<<tmp2<<"\n";
-				cout << ques[i] << " " << tmp1 << "\n";
+				if(strlen(ques[i])==0||strlen(ans[i])==0) continue;
+				encrypt(tmp,ques[i]);
+                answerout << tmp << "\n";
+				encrypt(tmp,ans[i]);
+				answerout << tmp << "\n";
 		    }
+			encrypt(tmp,ques[num2]);
+			answerout << tmp << "\n";
+			encrypt(tmp,ans[num2]);
+			answerout << tmp;
 			answerout.close();
 		}
 		void input(){
-			char tmp1[1000],tmp2[1000];
+			char tmp[1000];
 			ifstream answerin("answer.tze");
+			if(!answerin) return;
             while(!answerin.eof())
 			{
-				num2=num1;
+				answerin.getline(tmp,1000,'\n');
+				if(strlen(tmp)==0) continue;
 				num2++;
-				answerin.getline(tmp1,1000,'\n');
-				decrypt(ques[num2],tmp1);
-				answerin.getline(tmp2,1000,'\n');
-				decrypt(ans[num2],tmp2);
+				decrypt(ques[num2],tmp);
+				answerin.getline(tmp,1000,'\n');
+				decrypt(ans[num2],tmp);
 			}
 			answerin.close();
 		}
+		int debug1(){
+			return num1;
+		}
+		int debug2(){
+			return num2;
+		}
 	private:
-		char ques[1000][100]={{0}},ans[1000][100]={{0}};
+		char ques[1000][100],ans[1000][100];
 		int num1=-1,num2=-1;
 };
 void clearScreen(){
@@ -178,6 +191,10 @@ void startupscreen(){
     cout << s1[a[0]] << s1[a[1]] << s1[a[2]] << s1[a[3]] << s1[a[4]] << "\n";
     cout << s2[a[0]] << s2[a[1]] << s2[a[2]] << s2[a[3]] << s2[a[4]] << "\n";
     cout << s3[a[0]] << s3[a[1]] << s3[a[2]] << s3[a[3]] << s3[a[4]];
-    cout << "    莲酱0.3 by Koooyf & Catsworld & Crackpot from 208\n";
+    cout << "    莲酱0.4 by Koooyf & Catsworld & Crackpot from 208\n";
     cout << "--------------------------------------------------------------------\n";
+}
+bool strhead(char *full,char *sub){
+	if(strstr(full,sub)==full) return true;
+	return false;
 }

@@ -5,18 +5,18 @@ void shutdown();
 void startupfunc();
 void init();
 void save();
-void process(char *in);
+void process();
 void commandExit();
 void commandClear();
 void commandTeach();
 void commandHelp();
 void commandNotFound();
+void debug();
 Config user;
 RecordList chatRecord;
 Answerlist answers;
 const char password[]="catsworld";
 int main(){
-    atexit(commandExit);
 	startup();
 	return 0;
 }
@@ -26,15 +26,12 @@ void startup(){
 	ifstream configin("config.tze");
 	if(!configin) init();
 	else startupfunc();
-    while(true){
-        char content[1000]={0};
-        cin >> content;
-        process(content);
-    }
+	answers.init(user);
+    while(true) process();
 }
 void shutdown(){
-    clearScreen();
     save();
+	clearScreen();
     exit(0);
 }
 void init(){
@@ -51,50 +48,38 @@ void init(){
 }
 void startupfunc(){
     user.input();
-    char tmp[1000]={0};
+    char tmp[1000];
     screenSleep();
     sprintf(tmp,"Renge: 欢、欢迎回来……%s……\n",user.name);
     chatRecord.add(tmp);
 	answers.init(user);
-	answers.input();
 }
 void save(){
     answers.output();
 }
-void process(char *in){
-    if(in[0]!='/'){
-        char tmp[1000]={0};
-        cin.getline(tmp,1000,'\n');
-        strcat(in,tmp);
-        sprintf(tmp,"%s: %s\n",user.name,in);
-        chatRecord.add(tmp);
-        answers.answer(in,chatRecord);
-    }else if(strcmp(in,"/exit")==0){
-        char tmp[1000]={0};
-        cin.getline(tmp,1000,'\n');
-        exit(0);
-    }else if(strcmp(in,"/clear")==0){
-        char tmp[1000]={0};
-        cin.getline(tmp,1000,'\n');
-        commandClear();
-	}else if(strcmp(in,"/teach")==0){
-		char tmp[1000]={0};
-		cin.getline(tmp,1000,'\n');
-		commandTeach();
-    }else if(strcmp(in,"/help")==0||strcmp(in,"/?")==0){
-        char tmp[1000]={0};
-        cin.getline(tmp,1000,'\n');
-        commandHelp();
-    }else{
-        char tmp[1000]={0};
-        cin.getline(tmp,1000,'\n');
-        commandNotFound();
-    }
+void process(){
+	char tmp[1000];
+    cin.getline(tmp,1000,'\n');
+	if(strlen(tmp)==0){
+		chatRecord.output();
+		return;
+	}
+	if(tmp[0]!='/'){
+		char tmp2[1000];
+        sprintf(tmp2,"%s: %s\n",user.name,tmp);
+        chatRecord.add(tmp2);
+        answers.answer(tmp,chatRecord);
+    }else if(strhead(tmp,"/exit ")||strcmp(tmp,"/exit")==0) commandExit();
+	else if(strhead(tmp,"/clear ")||strcmp(tmp,"/clear")==0) commandClear();
+	else if(strhead(tmp,"/teach ")||strcmp(tmp,"/teach")==0) commandTeach();
+    else if(strhead(tmp,"/help ")||strcmp(tmp,"/help")==0) commandHelp();
+	else commandNotFound();
 }
 void commandExit(){
     screenSleep();
     chatRecord.add("Renge: 下、下次再见……\n");
-    getchar();
+	screenSleep();
+	screenSleep();
     shutdown();
 }
 void commandClear(){
@@ -110,13 +95,26 @@ void commandNotFound(){
     chatRecord.add("Renge: ……？大概可以用/help和/?来查看帮助……\n");
 }
 void commandTeach(){
-	char tmp1[1000]={0},tmp2[1000]={0},tmp3[1000]={0};
+	char tmp1[1000],tmp2[1000],tmp3[1000];
 	chatRecord.add("Renge: 喵？要教我些什么……？\n");
 	cin.getline(tmp1,1000,'\n');
+	while(strlen(tmp1)==0){
+		chatRecord.output();
+		cin.getline(tmp1,1000,'\n');
+	}
 	sprintf(tmp3,"Renge: “%s”么……？我该怎么回答？\n",tmp1);
 	chatRecord.add(tmp3);
 	cin.getline(tmp2,1000,'\n');
+	while(strlen(tmp2)==0){
+		chatRecord.output();
+		cin.getline(tmp2,1000,'\n');
+	}
 	sprintf(tmp3,"Renge: “%s”……我记住了……\n",tmp2);
 	chatRecord.add(tmp3);
 	answers.teach(tmp1,tmp2,user);
+}
+void debug(){
+	char tmp[1000];
+	sprintf(tmp,"%d %d\n",answers.debug1(),answers.debug2());
+	chatRecord.add(tmp);
 }
