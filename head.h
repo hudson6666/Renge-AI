@@ -98,7 +98,7 @@ class Answerlist{
 						max=sum;
 						where=i;
 					}*/
-					if(strhead(question,ques[i])){
+					if(strstr(question,ques[i])!=NULL){
 						if(strlen(ques[i])>max){
 							max=strlen(ques[i]);
 							where=i;
@@ -110,17 +110,17 @@ class Answerlist{
 			else if(max==0) sprintf(tmp,"Renge: ……嗯？\n");
 				chatRecord.add(tmp);
 		}
-		void init(Config user){
-			initadd("你好","你好",user);
+		void init(){
+			defaultList();
 			num2=num1;
 			input();
 		}
-		void initadd(char *question,char *answer,Config user){
+		void initadd(char *question,char *answer){
 			num1++;
 			sprintf(ques[num1],"%s",question);
 			sprintf(ans[num1],"%s",answer);
 		}
-		void teach(char *question,char *answer,Config user){
+		void teach(char *question,char *answer){
 			if(strlen(question)==0||strlen(answer)==0) return;
             num2++;
 			sprintf(ques[num2],"%s",question);
@@ -170,6 +170,7 @@ class Answerlist{
 	private:
 		char ques[1000][100],ans[1000][100];
 		int num1=-1,num2;
+		void defaultList();
 };
 void clearScreen(){
     system("clear");
@@ -194,7 +195,7 @@ void startupscreen(){
     cout << s1[a[0]] << s1[a[1]] << s1[a[2]] << s1[a[3]] << s1[a[4]] << "\n";
     cout << s2[a[0]] << s2[a[1]] << s2[a[2]] << s2[a[3]] << s2[a[4]] << "\n";
     cout << s3[a[0]] << s3[a[1]] << s3[a[2]] << s3[a[3]] << s3[a[4]];
-    cout << "    莲酱0.4 by Koooyf & Catsworld & Crackpot from 208\n";
+    cout << "    莲酱1.0 by Koooyf & Catsworld & Crackpot from 208\n";
     cout << "--------------------------------------------------------------------\n";
 }
 bool strhead(char *full,char *sub){

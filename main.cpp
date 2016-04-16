@@ -1,4 +1,4 @@
-#include"head.h"
+#include"default.h"
 using namespace std;
 void startup();
 void shutdown();
@@ -26,7 +26,7 @@ void startup(){
 	ifstream configin("config.tze");
 	if(!configin) init();
 	else startupfunc();
-	answers.init(user);
+	answers.init();
     while(true) process();
 }
 void shutdown(){
@@ -52,7 +52,7 @@ void startupfunc(){
     screenSleep();
     sprintf(tmp,"Renge: 欢、欢迎回来……%s……\n",user.name);
     chatRecord.add(tmp);
-	answers.init(user);
+	answers.init();
 }
 void save(){
     answers.output();
@@ -88,7 +88,7 @@ void commandClear(){
 }
 void commandHelp(){
     screenSleep();
-    chatRecord.add("Renge: 嗯……/exit可以用来退出=w=还有/clear用于清屏什么的……\n");
+    chatRecord.add("Renge: 嗯……/exit可以用来退出=w=还有/clear用于清屏什么的……/teach的话就可以教窝说话啰~~\n");
 }
 void commandNotFound(){
     screenSleep();
@@ -111,7 +111,7 @@ void commandTeach(){
 	}
 	sprintf(tmp3,"Renge: “%s”……我记住了……\n",tmp2);
 	chatRecord.add(tmp3);
-	answers.teach(tmp1,tmp2,user);
+	answers.teach(tmp1,tmp2);
 }
 void debug(){
 	char tmp[1000];
