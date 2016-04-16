@@ -12,6 +12,7 @@ class RecordList;
 class Answerlist;
 void clearScreen();
 void startupscreen();
+void inName(char *out,char *in,Config user);
 bool strhead(char *full,char *sub);
 class Config{
 	public:
@@ -180,6 +181,30 @@ void clearScreen(){
 }
 void screenSleep(){
     for(long long loop=0;loop<120000000;loop++);
+}
+void inName(char *in,char *out,Config user)
+{
+	int t=strlen(user.name);
+	int p=strlen(out);
+	int i;
+	for(i=0;out[i]!='\n';i++)
+	{
+		if(out[i]=='%'&&out[i+1]=='n')
+		{
+			int tot=0;
+			for(int j=i;j<=i+t-1;j++)
+			{
+				in[j]=user.name[tot];
+				tot++;
+			}
+			 i=i+t-1;	
+		}
+		else
+		{
+			in[i]=out[i];
+		}
+	}
+	in[i]='\n';
 }
 void startupscreen(){
     struct tm *now;
