@@ -38,7 +38,7 @@ void init(){
     screenSleep();
     chatRecord.add("Renge: 初、初次见面……请、请告诉我你的名字……>///<\n",user);
 	char tmp[1000]={0};
-	cin >> tmp;
+	cin.getline(tmp,1000,'\n');
 	user.changeName(tmp);
     sprintf(tmp,"你：%s\n",user.name);
     chatRecord.add(tmp,user);
