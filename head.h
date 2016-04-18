@@ -40,26 +40,38 @@ class Config{
 };
 class RecordList{
 	public:
-		void add(char *newRecord){
+		void add(char *newRecord,Config user){
             num++;
             sprintf(rec[num%total],"%s",newRecord);
-            output();
+            output(user);
 		}
         void clear(){
             num=-1;
             startupscreen();
             for(int i=0;i<total;i++) cout << "\n";
         }
-		void output(){
+		void output(Config user){
             clearScreen();
             startupscreen();
             if (num<total){
-                for(int i=0;i<=num;i++) cout << rec[i];
+                for(int i=0;i<=num;i++){
+					char tmp[1000];
+					inName(tmp,rec[i],user);
+					cout << tmp;
+				}
                 for(int i=0;i<total-num-1;i++) cout << "\n";
             }
             else{
-                for(int i=num%total+1;i<total;i++) cout << rec[i];
-                for(int i=0;i<=num%total;i++) cout << rec[i];
+                for(int i=num%total+1;i<total;i++){
+					char tmp[1000];
+					inName(tmp,rec[i],user);
+					cout << tmp;
+				}
+                for(int i=0;i<=num%total;i++){
+					char tmp[1000];
+					inName(tmp,rec[i],user);
+					cout << tmp;
+				}
             }
 		}
 	private:
@@ -69,14 +81,16 @@ class RecordList{
 };
 class Answerlist{
 	public:
-		void answer(char *question,RecordList &chatRecord){
+		void answer(char *question,RecordList &chatRecord,Config user){
 			for(int i=0;i<=num2;i++)
 			{
-				if(strcmp(question,ques[i])==0)
+				char tmpp[1000];
+				inName(tmpp,ques[i],user);
+				if(strcmp(question,tmpp)==0)
 				{
 					char tmp[1000];
 					sprintf(tmp,"Renge: %s\n",ans[i]);
-					chatRecord.add(tmp);
+					chatRecord.add(tmp,user);
 					return;
 				}
 			}
@@ -99,9 +113,11 @@ class Answerlist{
 						max=sum;
 						where=i;
 					}*/
-					if(strstr(question,ques[i])!=NULL){
-						if(strlen(ques[i])>max){
-							max=strlen(ques[i]);
+					char tmpp[1000];
+					inName(tmpp,ques[i],user);
+					if(strstr(question,tmpp)!=NULL){
+						if(strlen(tmpp)>max){
+							max=strlen(tmpp);
 							where=i;
 						}
 					}
@@ -109,7 +125,7 @@ class Answerlist{
 				char tmp[1000];
 			if(max!=0) sprintf(tmp,"Renge: %s\n",ans[where]);
 			else if(max==0) sprintf(tmp,"Renge: ……嗯？\n");
-				chatRecord.add(tmp);
+				chatRecord.add(tmp,user);
 		}
 		void init(){
 			defaultList();
@@ -186,25 +202,27 @@ void inName(char *in,char *out,Config user)
 {
 	int t=strlen(user.name);
 	int p=strlen(out);
-	int i;
-	for(i=0;out[i]!='\n';i++)
+	int i=0,k=0;
+	memset(in,0,sizeof(in));
+	while(out[i]!='\0')
 	{
 		if(out[i]=='%'&&out[i+1]=='n')
 		{
-			int tot=0;
-			for(int j=i;j<=i+t-1;j++)
+			for(int tot=0;tot<t;tot++)
 			{
-				in[j]=user.name[tot];
-				tot++;
+				in[k]=user.name[tot];
+				k++;
 			}
-			 i=i+t-1;	
+			i++;
 		}
 		else
 		{
-			in[i]=out[i];
+			in[k]=out[i];
+			k++;
 		}
+		i++;
 	}
-	in[i]='\n';
+	in[k]='\0';
 }
 void startupscreen(){
     struct tm *now;
