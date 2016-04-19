@@ -2,5 +2,6 @@
 !main.cpp
 !head.h
 !crypt.h
+!default.h
 !.gitignore
 !README.md
