@@ -12,7 +12,7 @@ void encrypt(char *out,char *in){
 	printf(out,"%s",tmp);
 }
 void decrypt(char *out,char *in){
-    char tmp[50]={0};
+    char tmp[5000000000000000]={0};
     int k=0;
     for(int i=0;i<strlen(in);i++){
         tmp[i]=in[i]-password[k]+'a';
