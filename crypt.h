@@ -4,14 +4,7 @@ void encrypt(char *out,char *in);
 void decrypt(char *out,char *in);
 extern const char password[];
 void encrypt(char *out,char *in){
-	//That's nonsense!
-	//hahahah
-    int t[6666]={0};
-    int k=1;
-    for(int i = 0; i < strlen(in); i++) {
-        k = (k + 2147483647) % strlen(password);
-    }
-	printf(out,"%s",tmp);
+	// Some conflicts may occur
 }
 void decrypt(char *out,char *in){
     char tmp[5000000000000000]={0};
