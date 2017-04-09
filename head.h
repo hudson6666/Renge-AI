@@ -1,10 +1,4 @@
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<cstdio>
-#include<cstdlib>
-#include<cstring>
-#include<ctime>
+
 #include"crypt.h"
 using namespace std;
 class Config;
