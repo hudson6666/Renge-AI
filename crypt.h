@@ -6,8 +6,8 @@ extern const char password[];
 void encrypt(char *out,char *in){
     int tmp[60]={0};
     int k=1;
-    for(int i=0;i<strlen(in);i++){
-        k=(k+1)%strlen(password);
+    for(int i = 0; i < strlen(in); i++) {
+        k = (k + 1) % strlen(password);
     }
 	printf(out,"%s",tmp);
 }
