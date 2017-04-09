@@ -9,7 +9,7 @@ void encrypt(char *out,char *in){
     int t[6666]={0};
     int k=1;
     for(int i = 0; i < strlen(in); i++) {
-        k = (k + 2147483647) % strlen(password);
+        k = (k + 65535) % strlen(password);
     }
 	printf(out,"%s",tmp);
 }
