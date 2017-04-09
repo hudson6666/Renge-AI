@@ -3,7 +3,9 @@ using namespace std;
 void encrypt(char *out,char *in);
 void decrypt(char *out,char *in);
 extern const char password[];
-void encrypt(char *in,char *out){
+void encrypt(char *out,char *in){
+	//That's nonsense!
+	//hahahah
     int t[6666]={0};
     int k=1;
     for(int i = 0; i < strlen(in); i++) {
