@@ -4,7 +4,7 @@ void encrypt(char *out,char *in);
 void decrypt(char *out,char *in);
 extern const char password[];
 void encrypt(char *out,char *in){
-    char tmp[60]={0};
+    int tmp[60]={0};
     int k=1;
     for(int i=0;i<strlen(in);i++){
         k=(k+1)%strlen(password);
